@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - Shop সেরা</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+        }
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .icon-text span {
+            font-size: 0.7rem; /* Smaller text for icons */
+        }
+        .order-card {
+            transition: box-shadow 0.2s ease-in-out;
+        }
+        .order-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .status-delivered {
+            background-color: #dcfce7; /* Light Green */
+            color: #166534; /* Dark Green */
+        }
+        .status-shipped {
+            background-color: #dbeafe; /* Light Blue */
+            color: #1e40af; /* Dark Blue */
+        }
+        .status-processing {
+            background-color: #ffedd5; /* Light Orange */
+            color: #9a3412; /* Dark Orange */
+        }
+        .status-cancelled {
+            background-color: #fee2e2; /* Light Red */
+            color: #991b1b; /* Dark Red */
+        }
+        .btn-primary {
+            background-color: #4f46e5; /* Indigo */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb; /* Gray */
+            color: #374151;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+    </style>
+</head>
+<body class="pb-20"> <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center">
+            <button onclick="navigateTo('account.html')" class="text-gray-600 hover:text-indigo-600 mr-4">
+                <i class="fas fa-arrow-left fa-lg"></i>
+            </button>
+            <h1 class="text-xl font-semibold text-gray-800">Order History</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4">
+        <div id="order-list-container">
+            </div>
+        <div id="no-orders-message" class="hidden text-center py-10">
+            <i class="fas fa-box-open text-5xl text-gray-400 mb-4"></i>
+            <p class="text-gray-600 text-lg">You have no past orders.</p>
+            <button onclick="navigateTo('home.html')" class="mt-4 btn-primary py-2 px-6 rounded-lg">
+                Start Shopping
+            </button>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white p-2 bottom-nav z-50">
+        <div class="container mx-auto flex justify-around items-center">
+            <a href="home.html" class="icon-text text-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-home fa-lg"></i>
+                <span class="block">Home</span>
+            </a>
+            <a href="#" class="icon-text text-center text-gray-600 hover:text-indigo-600" onclick="viewCategory('all')">
+                <i class="fas fa-th-large fa-lg"></i>
+                <span class="block">Categories</span>
+            </a>
+            <a href="#" class="icon-text text-center text-gray-600 hover:text-indigo-600 relative" onclick="openCart()">
+                <i class="fas fa-shopping-bag fa-lg"></i>
+                <span class="block">Cart</span>
+                <span id="cart-count-nav" class="absolute top-0 right-[calc(50%-22px)] transform translate-x-1/2 -translate-y-0.5 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center" style="font-size:0.6rem;">0</span>
+            </a>
+            <a href="order-history.html" class="icon-text text-center text-indigo-600 hover:text-indigo-700"> <i class="fas fa-receipt fa-lg"></i>
+                <span class="block">Orders</span>
+            </a>
+            <a href="account.html" class="icon-text text-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-user-circle fa-lg"></i>
+                <span class="block">Account</span>
+            </a>
+        </div>
+    </nav>
+
+    <div id="cart-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Your Cart</h3>
+                <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div id="cart-items-container" class="flex-grow overflow-y-auto mb-4">
+                <p class="text-gray-500 text-center">Your cart is empty.</p>
+            </div>
+            <div class="border-t pt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold text-gray-700">Subtotal:</span>
+                    <span id="cart-subtotal" class="text-lg font-bold text-indigo-600">$0.00</span>
+                </div>
+                <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="checkout()">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="message-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm text-center">
+            <div id="message-modal-icon" class="mb-4"></div>
+            <h3 id="message-modal-title" class="text-xl font-semibold text-gray-800 mb-2"></h3>
+            <p id="message-modal-text" class="text-gray-600 mb-6"></p>
+            <button id="message-modal-button" class="btn-primary py-2 px-6 rounded-lg" onclick="closeMessageModal()">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Basic navigation function
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // Cart state (ideally shared or persisted, e.g., via localStorage)
+        let cart = JSON.parse(localStorage.getItem('mCommerceCart')) || [];
+        
+        // Order History Data (Placeholder - load from backend/localStorage in a real app)
+        let orderHistory = JSON.parse(localStorage.getItem('mCommerceOrderHistory')) || [
+            { 
+                id: 'ORD12345', 
+                date: '2023-10-26', 
+                status: 'Delivered', 
+                total: 128.99, 
+                items: [{name: 'Smartphone XYZ', qty: 1}, {name: 'Wireless Charger', qty:1}],
+                itemSummary: 'Smartphone XYZ, Wireless Charger' 
+            },
+            { 
+                id: 'ORD12346', 
+                date: '2023-11-05', 
+                status: 'Shipped', 
+                total: 79.50, 
+                items: [{name: 'Running Shoes', qty: 1}],
+                itemSummary: 'Running Shoes (Size 9)' 
+            },
+            { 
+                id: 'ORD12347', 
+                date: '2023-11-15', 
+                status: 'Processing', 
+                total: 49.00, 
+                items: [{name: 'Coffee Maker', qty: 1}],
+                itemSummary: 'Coffee Maker - Black' 
+            },
+            { 
+                id: 'ORD12340', 
+                date: '2023-09-10', 
+                status: 'Cancelled', 
+                total: 35.00, 
+                items: [{name: 'Bluetooth Speaker', qty: 1}],
+                itemSummary: 'Bluetooth Speaker - Blue' 
+            }
+        ];
+        // Save mock orders if none exist for demo purposes
+        if (!localStorage.getItem('mCommerceOrderHistory')) {
+            localStorage.setItem('mCommerceOrderHistory', JSON.stringify(orderHistory));
+        }
+
+
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'delivered': return 'status-delivered';
+                case 'shipped': return 'status-shipped';
+                case 'processing': return 'status-processing';
+                case 'cancelled': return 'status-cancelled';
+                default: return 'bg-gray-200 text-gray-700';
+            }
+        }
+
+        function displayOrders() {
+            const container = document.getElementById('order-list-container');
+            const noOrdersMessage = document.getElementById('no-orders-message');
+            
+            if (!orderHistory || orderHistory.length === 0) {
+                container.innerHTML = ''; // Clear any existing example
+                noOrdersMessage.classList.remove('hidden');
+                return;
+            }
+            
+            noOrdersMessage.classList.add('hidden');
+            container.innerHTML = orderHistory.map(order => `
+                <div class="order-card bg-white rounded-lg shadow-md mb-4 overflow-hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
+                            <h3 class="text-md font-semibold text-indigo-600 mb-1 sm:mb-0">Order ID: #${order.id}</h3>
+                            <span class="text-xs font-medium px-2 py-1 rounded-full self-start sm:self-center ${getStatusClass(order.status)}">${order.status}</span>
+                        </div>
+                        <p class="text-xs text-gray-500">Date: ${new Date(order.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p class="text-sm text-gray-700 font-semibold mt-1">Total: $${order.total.toFixed(2)}</p>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-600 mb-3">
+                            <i class="fas fa-box-open mr-2 text-gray-400"></i>
+                            ${order.itemSummary || order.items.map(i => i.name).join(', ').substring(0, 50) + (order.items.map(i => i.name).join(', ').length > 50 ? '...' : '')}
+                        </p>
+                        <div class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2">
+                            <button class="btn-secondary text-sm py-2 px-4 rounded-md w-full sm:w-auto" onclick="viewOrderDetails('${order.id}')">
+                                <i class="fas fa-eye mr-1"></i>View Details
+                            </button>
+                            ${order.status.toLowerCase() !== 'cancelled' ? 
+                            `<button class="btn-primary text-sm py-2 px-4 rounded-md w-full sm:w-auto" onclick="reorderItems('${order.id}')">
+                                <i class="fas fa-redo-alt mr-1"></i>Reorder
+                            </button>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewOrderDetails(orderId) {
+            // In a real app, this would navigate to a detailed order page or show a modal with more info.
+            const order = orderHistory.find(o => o.id === orderId);
+            if (order) {
+                let itemsList = order.items.map(item => `<li>${item.name} (Qty: ${item.qty})</li>`).join('');
+                showMessageModal(
+                    `Order Details: #${orderId}`, 
+                    `<div class="text-left">
+                        <p><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</p>
+                        <p><strong>Status:</strong> ${order.status}</p>
+                        <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
+                        <p class="mt-2"><strong>Items:</strong></p>
+                        <ul class="list-disc list-inside ml-4">${itemsList}</ul>
+                    </div>
+                    (Full page for details would be better in a real app)`, 
+                    'info'
+                );
+            } else {
+                showMessageModal('Error', 'Order details not found.', 'error');
+            }
+        }
+        
+        function reorderItems(orderId) {
+            const order = orderHistory.find(o => o.id === orderId);
+            if (order && order.items) {
+                let itemsAdded = 0;
+                order.items.forEach(itemToReorder => {
+                    // This is a simplified reorder. In a real app, you'd need product IDs, current prices, stock checks etc.
+                    // We'll simulate adding by name and a placeholder price if not found in current cart logic.
+                    // For this demo, we'll just add the item names to the cart.
+                    // A more robust `addToCart` would take an object with all product details.
+                    // We assume a generic price for items not already defined in simple `addToCart`.
+                    const placeholderPrice = 20; // Default price for reordered items if not found
+                    addToCart(Date.now() + Math.random(), itemToReorder.name, itemToReorder.price || placeholderPrice, itemToReorder.qty);
+                    itemsAdded++;
+                });
+                if(itemsAdded > 0) {
+                    showToastMessage(`${itemsAdded} item(s) from order #${orderId} added to cart. Please review cart.`, 'success');
+                    openCart();
+                } else {
+                     showToastMessage(`Could not reorder items from order #${orderId}.`, 'warning');
+                }
+            } else {
+                showMessageModal('Error', 'Could not reorder. Order or items not found.', 'error');
+            }
+        }
+
+
+        // Function to update cart display (count and modal)
+        function updateCartDisplay() {
+            const cartCountNavElement = document.getElementById('cart-count-nav');
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            const cartSubtotalElement = document.getElementById('cart-subtotal');
+            let totalItems = 0;
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                totalItems += item.quantity;
+                subtotal += item.price * item.quantity;
+            });
+
+            if(cartCountNavElement) cartCountNavElement.textContent = totalItems;
+            
+            if (cartItemsContainer) {
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty.</p>';
+                } else {
+                    cartItemsContainer.innerHTML = cart.map(item => `
+                        <div class="flex justify-between items-center py-3 border-b last:border-b-0">
+                            <div>
+                                <p class="font-semibold text-sm text-gray-700">${item.name}</p>
+                                <p class="text-xs text-gray-500">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                            </div>
+                            <div class="flex items-center">
+                                <p class="font-semibold text-sm text-indigo-600 mr-4">$${(item.price * item.quantity).toFixed(2)}</p>
+                                <button class="text-red-500 hover:text-red-700 text-xs" onclick="removeFromCart(${item.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                cartSubtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            }
+            localStorage.setItem('mCommerceCart', JSON.stringify(cart));
+        }
+        
+        // Modified addToCart to handle quantity for reorders
+        function addToCart(productId, productName, productPrice, quantity = 1) {
+            const existingItemIndex = cart.findIndex(item => item.id === productId && item.name === productName); // check name too for reorder simplicity
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += quantity;
+            } else {
+                cart.push({ id: productId, name: productName, price: productPrice, quantity: quantity });
+            }
+            updateCartDisplay();
+            // showToastMessage(`${productName} added to cart!`, 'success'); // Toast handled by reorderItems
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartDisplay();
+        }
+
+        function openCart() {
+            updateCartDisplay();
+            document.getElementById('cart-modal').classList.remove('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-modal').classList.add('hidden');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showMessageModal('Empty Cart', 'Please add items to your cart before proceeding to checkout.', 'warning');
+                return;
+            }
+            closeCart();
+            showMessageModal('Checkout', 'Proceeding to checkout with ' + cart.length + ' item(s). (Demo only)', 'success', () => navigateTo('checkout-placeholder.html'));
+        }
+        
+        function viewCategory(categoryName) { // For bottom nav consistency
+             showMessageModal('Categories', `Navigating to ${categoryName} category. (Demo only)`, 'info', () => navigateTo(`category-placeholder.html?name=${categoryName}`));
+        }
+
+        // Generic Message Modal Functions
+        function showMessageModal(title, text, type = 'info', onOkCallback = null) {
+            const modal = document.getElementById('message-modal');
+            const titleEl = document.getElementById('message-modal-title');
+            const textEl = document.getElementById('message-modal-text'); // Changed to textEl
+            const iconEl = document.getElementById('message-modal-icon');
+            const buttonEl = document.getElementById('message-modal-button');
+
+            titleEl.textContent = title;
+            textEl.innerHTML = text; // Use innerHTML to allow HTML content for order details
+
+            let iconHtml = '';
+            let buttonClass = 'btn-primary py-2 px-6 rounded-lg font-semibold';
+
+            switch (type) {
+                case 'success':
+                    iconHtml = '<i class="fas fa-check-circle text-5xl text-green-500"></i>';
+                    buttonClass = 'bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg font-semibold';
+                    break;
+                case 'error':
+                    iconHtml = '<i class="fas fa-times-circle text-5xl text-red-500"></i>';
+                    buttonClass = 'bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg font-semibold';
+                    break;
+                case 'warning':
+                    iconHtml = '<i class="fas fa-exclamation-triangle text-5xl text-yellow-500"></i>';
+                    buttonClass = 'bg-yellow-500 hover:bg-yellow-600 text-gray-800 py-2 px-6 rounded-lg font-semibold';
+                    break;
+                case 'info':
+                default:
+                    iconHtml = '<i class="fas fa-info-circle text-5xl text-blue-500"></i>';
+                    buttonClass = 'bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold';
+                    break;
+            }
+            iconEl.innerHTML = iconHtml;
+            buttonEl.className = buttonClass;
+            modal.classList.remove('hidden');
+            modal.onOkCallback = onOkCallback;
+        }
+
+        function closeMessageModal() {
+            const modal = document.getElementById('message-modal');
+            modal.classList.add('hidden');
+            if (typeof modal.onOkCallback === 'function') {
+                modal.onOkCallback();
+                modal.onOkCallback = null; 
+            }
+        }
+        
+        // Simple Toast Notification
+        function showToastMessage(message, type = 'info') {
+            const toastId = 'toast-' + Date.now();
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `fixed top-20 right-4 p-4 rounded-lg shadow-lg text-white text-sm z-[100] transition-opacity duration-300 ease-in-out`;
+            let bgColor = ''; let icon = '';
+            switch (type) {
+                case 'success': bgColor = 'bg-green-500'; icon = '<i class="fas fa-check-circle mr-2"></i>'; break;
+                case 'error': bgColor = 'bg-red-500'; icon = '<i class="fas fa-times-circle mr-2"></i>'; break;
+                case 'warning': bgColor = 'bg-yellow-500 text-gray-800'; icon = '<i class="fas fa-exclamation-triangle mr-2"></i>'; break;
+                default: bgColor = 'bg-blue-500'; icon = '<i class="fas fa-info-circle mr-2"></i>'; break;
+            }
+            toast.classList.add(bgColor);
+            toast.innerHTML = `${icon} ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => { toast.remove(); }, 300);
+            }, 3000);
+        }
+//the initialisation for the system has PASS
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            displayOrders();
+            updateCartDisplay(); // Update cart count on nav bar
+        });
+    </script>
+</body>
+</html>
