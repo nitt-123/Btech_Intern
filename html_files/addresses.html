@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - ShopEase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+        }
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .icon-text span {
+            font-size: 0.7rem; /* Smaller text for icons */
+        }
+        .card {
+            transition: box-shadow 0.2s ease-in-out;
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .btn-primary {
+            background-color: #4f46e5; /* Indigo */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb; /* Gray */
+            color: #374151;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .btn-outline {
+             border: 1px solid #d1d5db; /* gray-300 */
+             background-color: transparent;
+             color: #4b5563; /* gray-600 */
+             padding: 0.5rem 1rem;
+             border-radius: 0.375rem; /* rounded-md */
+             font-size: 0.9rem;
+             transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+         .btn-outline:hover {
+            background-color: #f3f4f6; /* gray-100 */
+            border-color: #9ca3af; /* gray-400 */
+            color: #1f2937; /* gray-800 */
+         }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="password"],
+        input[type="date"],
+        textarea,
+        select {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #d1d5db; /* gray-300 */
+            border-radius: 0.375rem; /* rounded-md */
+            width: 100%;
+            font-size: 0.9rem;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+         input[type="checkbox"],
+         input[type="radio"] {
+             margin-right: 0.5rem;
+             vertical-align: middle;
+             position: relative;
+             top: -1px;
+         }
+         input[type="file"] {
+             display: none; /* Hide the default file input */
+         }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151; /* gray-700 */
+            font-size: 0.9rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem; /* Consistent spacing between form groups */
+        }
+        .form-row {
+             display: grid;
+             gap: 1rem; /* Gap between columns */
+             grid-template-columns: 1fr; /* Single column by default */
+             margin-bottom: 1.5rem;
+        }
+         @media (min-width: 640px) { /* Small screens and up */
+             .form-row {
+                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Two columns or more if space allows */
+             }
+         }
+
+        .profile-avatar {
+            display: flex;
+            flex-direction: column; /* Stack elements by default */
+            align-items: center; /* Center items horizontally */
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb; /* gray-200 */
+        }
+         @media (min-width: 768px) { /* Medium screens and up */
+             .profile-avatar {
+                 flex-direction: row; /* Row layout on medium screens */
+                 justify-content: flex-start; /* Align items to the start */
+                 align-items: center; /* Align items vertically */
+             }
+         }
+
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* Circle shape */
+            overflow: hidden;
+            margin-bottom: 1rem; /* Space below avatar on small screens */
+            border: 2px solid #e5e7eb; /* gray-200 */
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+         @media (min-width: 768px) { /* Medium screens and up */
+             .avatar-preview {
+                 margin-bottom: 0; /* Remove bottom margin */
+                 margin-right: 2rem; /* Space to the right of avatar */
+             }
+         }
+        .avatar-preview img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the area without distorting aspect ratio */
+        }
+        .avatar-upload {
+            display: flex;
+            flex-direction: column; /* Stack buttons on small screens */
+            align-items: center;
+            gap: 0.5rem; /* Space between buttons */
+        }
+         @media (min-width: 768px) { /* Medium screens and up */
+             .avatar-upload {
+                flex-direction: row; /* Row layout on medium screens */
+                align-items: center;
+             }
+         }
+
+        .profile-tabs {
+            display: flex;
+            flex-wrap: wrap; /* Allow tabs to wrap */
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e5e7eb; /* gray-200 */
+        }
+        .tab-btn {
+            padding: 0.75rem 1.25rem;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            color: #6b7280; /* gray-500 */
+            font-weight: 500;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 2px solid transparent; /* Border for active indicator */
+            margin-bottom: -2px; /* Pull border up to overlap container border */
+        }
+        .tab-btn:hover {
+            color: #4f46e5; /* indigo-600 */
+            border-color: #c7d2fe; /* indigo-200 */
+        }
+        .tab-btn.active {
+            color: #4f46e5; /* indigo-600 */
+            border-color: #4f46e5; /* indigo-600 */
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none; /* Hide content by default */
+            padding: 1rem 0; /* Add some padding above content */
+        }
+        .tab-content.active {
+            display: block; /* Show active content */
+        }
+
+        /* Sidebar Specific Styles */
+         .account-sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.375rem; /* rounded-md */
+            color: #4b5563; /* gray-600 */
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+         }
+        .account-sidebar-link:hover {
+            background-color: #eef2ff; /* indigo-50 */
+            color: #4f46e5; /* indigo-600 */
+        }
+        .account-sidebar-link i {
+            margin-right: 0.75rem;
+            width: 1.25rem; /* Fixed width for icon */
+            text-align: center;
+        }
+         .account-sidebar-link.active {
+             background-color: #4f46e5; /* indigo-600 */
+             color: white;
+         }
+         .account-sidebar-link.active i {
+             color: white;
+         }
+         .account-sidebar h2 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            color: #1f2937; /* gray-800 */
+            margin-bottom: 1rem;
+            padding: 0 1rem; /* Match link padding */
+         }
+
+
+    </style>
+</head>
+<body class="pb-20">
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center">
+            <button onclick="navigateTo('account.html')" class="text-gray-600 hover:text-indigo-600 mr-4">
+                <i class="fas fa-arrow-left fa-lg"></i>
+            </button>
+            <h1 class="text-xl font-semibold text-gray-800">Profile Settings</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="md:col-span-1 bg-white rounded-lg shadow-md p-4 h-min">
+                 <h2>My Account</h2>
+                 <nav>
+                     <a href="account.html" class="account-sidebar-link">
+                          <i class="fas fa-user"></i> Dashboard
+                     </a>
+                     <a href="order-history.html" class="account-sidebar-link">
+                         <i class="fas fa-receipt"></i> Orders
+                     </a>
+                     <a href="#" class="account-sidebar-link active">
+                          <i class="fas fa-cog"></i> Profile Settings
+                     </a>
+                      <a href="addresses.html" class="account-sidebar-link">
+                          <i class="fas fa-map-marker-alt"></i> Addresses
+                      </a>
+                     <a href="#" class="account-sidebar-link text-red-600 hover:text-red-700 hover:bg-red-50 mt-4">
+                         <i class="fas fa-sign-out-alt"></i> Logout
+                     </a>
+                 </nav>
+            </div>
+
+            <div class="md:col-span-3 bg-white rounded-lg shadow-md p-6">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">Profile Settings</h1>
+
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="personal-info">Personal Info</button>
+                    <button class="tab-btn" data-tab="password">Password</button>
+                    <button class="tab-btn" data-tab="notifications">Notifications</button>
+                    <button class="tab-btn" data-tab="security">Security</button>
+                </div>
+
+                <div class="tab-content active" id="personal-info">
+                    <form id="profile-form">
+                        <div class="profile-avatar">
+                            <div class="avatar-preview">
+                                <img src="https://via.placeholder.com/150" alt="Profile Picture" id="avatar-preview">
+                            </div>
+                            <div class="avatar-upload flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                                 <input type="file" id="avatar-upload" accept="image/*" class="hidden">
+                                <label for="avatar-upload" class="btn-outline cursor-pointer">
+                                    <i class="fas fa-camera mr-2"></i> Change Photo
+                                </label>
+                                <button type="button" class="btn-outline remove-avatar">
+                                    <i class="fas fa-trash mr-2"></i> Remove Photo
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">First Name</label>
+                                <input type="text" id="first-name" value="John" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" id="last-name" value="Doe" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" value="john.doe@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" value="(123) 456-7890" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="birthday">Date of Birth</label>
+                                <input type="date" id="birthday" value="1990-01-01">
+                            </div>
+                             <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender">
+                                    <option value="">Prefer not to say</option>
+                                    <option value="male" selected>Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="mt-6">
+                            <button type="submit" class="btn-primary py-2 px-6 rounded-lg font-semibold">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-content" id="password">
+                    <form id="password-form">
+                        <div class="form-group">
+                            <label for="current-password">Current Password</label>
+                            <input type="password" id="current-password" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="new-password">New Password</label>
+                            <input type="password" id="new-password" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="confirm-password">Confirm New Password</label>
+                            <input type="password" id="confirm-password" required>
+                        </div>
+                         <div class="mt-6">
+                            <button type="submit" class="btn-primary py-2 px-6 rounded-lg font-semibold">Change Password</button>
+                         </div>
+                    </form>
+                </div>
+
+                 <div class="tab-content" id="notifications">
+                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Email Notifications</h3>
+                     <div class="form-group flex items-center">
+                         <input type="checkbox" id="email-orders" checked>
+                         <label for="email-orders" class="mb-0 text-gray-700 font-normal">Order updates (shipping, delivery, etc.)</label>
+                     </div>
+                      <div class="form-group flex items-center">
+                         <input type="checkbox" id="email-promotions">
+                         <label for="email-promotions" class="mb-0 text-gray-700 font-normal">Promotions and marketing emails</label>
+                     </div>
+                     <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-4">App Notifications (Push)</h3>
+                      <div class="form-group flex items-center">
+                         <input type="checkbox" id="push-orders" checked>
+                         <label for="push-orders" class="mb-0 text-gray-700 font-normal">Order updates</label>
+                     </div>
+                      <div class="form-group flex items-center">
+                         <input type="checkbox" id="push-promotions">
+                         <label for="push-promotions" class="mb-0 text-gray-700 font-normal">Promotions and offers</label>
+                     </div>
+                      <div class="mt-6">
+                         <button type="button" class="btn-primary py-2 px-6 rounded-lg font-semibold">Save Notification Settings</button>
+                      </div>
+                 </div>
+
+                 <div class="tab-content" id="security">
+                      <h3 class="text-lg font-semibold text-gray-800 mb-4">Two-Factor Authentication (2FA)</h3>
+                      <p class="text-gray-600 text-sm mb-4">Add an extra layer of security to your account.</p>
+                      <button type="button" class="btn-secondary py-2 px-4 rounded-lg">Enable 2FA</button>
+
+                       <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-4">Login Activity</h3>
+                       <p class="text-gray-600 text-sm mb-4">Review recent login locations and devices.</p>
+                       <button type="button" class="btn-secondary py-2 px-4 rounded-lg">View Activity</button>
+
+                       <h3 class="text-lg font-semibold text-red-700 mt-6 mb-4">Danger Zone</h3>
+                       <p class="text-red-600 text-sm mb-4">Deleting your account is permanent and irreversible.</p>
+                       <button type="button" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg font-semibold">Delete Account</button>
+                 </div>
+
+            </div>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white p-2 bottom-nav z-50">
+        <div class="container mx-auto flex justify-around items-center">
+            <a href="home.html" class="icon-text text-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-home fa-lg"></i>
+                <span class="block">Home</span>
+            </a>
+            <a href="#" class="icon-text text-center text-gray-600 hover:text-indigo-600" onclick="viewCategory('all')">
+                <i class="fas fa-th-large fa-lg"></i>
+                <span class="block">Categories</span>
+            </a>
+            <a href="#" class="icon-text text-center text-gray-600 hover:text-indigo-600 relative" onclick="openCart()">
+                <i class="fas fa-shopping-bag fa-lg"></i>
+                <span class="block">Cart</span>
+                <span id="cart-count-nav" class="absolute top-0 right-[calc(50%-22px)] transform translate-x-1/2 -translate-y-0.5 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center" style="font-size:0.6rem;">0</span>
+            </a>
+            <a href="order-history.html" class="icon-text text-center text-gray-600 hover:text-indigo-600">
+                 <i class="fas fa-receipt fa-lg"></i>
+                 <span class="block">Orders</span>
+             </a>
+            <a href="account.html" class="icon-text text-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-user-circle fa-lg"></i>
+                <span class="block">Account</span>
+            </a>
+        </div>
+    </nav>
+
+     <div id="cart-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Your Cart</h3>
+                <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div id="cart-items-container" class="flex-grow overflow-y-auto mb-4">
+                <p class="text-gray-500 text-center">Your cart is empty.</p>
+            </div>
+            <div class="border-t pt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold text-gray-700">Subtotal:</span>
+                    <span id="cart-subtotal" class="text-lg font-bold text-indigo-600">$0.00</span>
+                </div>
+                 <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="checkout()">
+                     Proceed to Checkout
+                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="message-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm text-center">
+            <div id="message-modal-icon" class="mb-4"></div>
+            <h3 id="message-modal-title" class="text-xl font-semibold text-gray-800 mb-2"></h3>
+            <p id="message-modal-text" class="text-gray-600 mb-6"></p>
+            <button id="message-modal-button" class="btn-primary py-2 px-6 rounded-lg" onclick="closeMessageModal()">
+                OK
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+         // --- Basic Navigation & Modal Functions (Copied from previous examples) ---
+         // Note: checkout() function is simplified here, assuming it navigates to a checkout page
+         function navigateTo(page) {
+             window.location.href = page;
+         }
+
+         // Basic cart state - load from localStorage
+         let cart = JSON.parse(localStorage.getItem('mCommerceCart')) || [];
+
+         function updateCartDisplay() {
+             const cartCountNavElement = document.getElementById('cart-count-nav');
+             const cartItemsContainer = document.getElementById('cart-items-container');
+             const cartSubtotalElement = document.getElementById('cart-subtotal');
+
+             let totalItems = 0;
+             let subtotal = 0;
+
+             cart.forEach(item => {
+                 totalItems += item.quantity;
+                 subtotal += item.price * item.quantity;
+             });
+
+             if(cartCountNavElement) cartCountNavElement.textContent = totalItems;
+
+             if (cartItemsContainer) {
+                 if (cart.length === 0) {
+                     cartItemsContainer.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty.</p>';
+                 } else {
+                     cartItemsContainer.innerHTML = cart.map(item => `
+                         <div class="flex justify-between items-center py-3 border-b last:border-b-0">
+                             <div>
+                                 <p class="font-semibold text-sm text-gray-700">${item.name}</p>
+                                 <p class="text-xs text-gray-500">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                             </div>
+                             <div class="flex items-center">
+                                 <p class="font-semibold text-sm text-indigo-600 mr-4">$${(item.price * item.quantity).toFixed(2)}</p>
+                                  </div>
+                         </div>
+                     `).join('');
+                 }
+                 cartSubtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+             }
+              localStorage.setItem('mCommerceCart', JSON.stringify(cart)); // Keep localStorage updated
+         }
+
+         function openCart() {
+             updateCartDisplay();
+             document.getElementById('cart-modal').classList.remove('hidden');
+         }
+
+         function closeCart() {
+             document.getElementById('cart-modal').classList.add('hidden');
+         }
+
+          // Simplified checkout for modal button
+          function checkout() {
+             if (cart.length === 0) {
+                  showMessageModal('Empty Cart', 'Please add items to your cart before proceeding to checkout.', 'warning');
+                  return;
+             }
+             closeCart();
+             // In a real app, navigate to the actual checkout page
+             showMessageModal('Checkout', 'Proceeding to checkout with ' + cart.length + ' item(s). (Demo only)', 'info', () => navigateTo('checkout-placeholder.html'));
+          }
+
+
+         function showMessageModal(title, text, type = 'info', onOkCallback = null) {
+             const modal = document.getElementById('message-modal');
+             const titleEl = document.getElementById('message-modal-title');
+             const textEl = document.getElementById('message-modal-text');
+             const iconEl = document.getElementById('message-modal-icon');
+             const buttonEl = document.getElementById('message-modal-button');
+
+             titleEl.textContent = title;
+             textEl.innerHTML = text;
+
+             let iconHtml = '';
+             let buttonClass = 'btn-primary py-2 px-6 rounded-lg font-semibold';
+
+             switch (type) {
+                 case 'success': iconHtml = '<i class="fas fa-check-circle text-5xl text-green-500"></i>'; buttonClass = 'bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg font-semibold'; break;
+                 case 'error': iconHtml = '<i class="fas fa-times-circle text-5xl text-red-500"></i>'; buttonClass = 'bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg font-semibold'; break;
+                 case 'warning': iconHtml = '<i class="fas fa-exclamation-triangle text-5xl text-yellow-500"></i>'; buttonClass = 'bg-yellow-500 hover:bg-yellow-600 text-gray-800 py-2 px-6 rounded-lg font-semibold'; break;
+                 case 'info': default: iconHtml = '<i class="fas fa-info-circle text-5xl text-blue-500"></i>'; buttonClass = 'bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold'; break;
+             }
+             iconEl.innerHTML = iconHtml;
+             buttonEl.className = buttonClass; // Apply the class
+             modal.classList.remove('hidden');
+             modal.onOkCallback = onOkCallback;
+         }
+
+         function closeMessageModal() {
+             const modal = document.getElementById('message-modal');
+             modal.classList.add('hidden');
+             if (typeof modal.onOkCallback === 'function') {
+                 modal.onOkCallback();
+                 modal.onOkCallback = null;
+             }
+         }
+
+          function showToastMessage(message, type = 'info') {
+             const toastId = 'toast-' + Date.now();
+             const toast = document.createElement('div');
+             toast.id = toastId;
+             toast.className = `fixed top-20 right-4 p-4 rounded-lg shadow-lg text-white text-sm z-[100] transition-opacity duration-300 ease-in-out`;
+             let bgColor = ''; let icon = '';
+             switch (type) {
+                 case 'success': bgColor = 'bg-green-500'; icon = '<i class="fas fa-check-circle mr-2"></i>'; break;
+                 case 'error': bgColor = 'bg-red-500'; icon = '<i class="fas fa-times-circle mr-2"></i>'; break;
+                 case 'warning': bgColor = 'bg-yellow-500 text-gray-800'; icon = '<i class="fas fa-exclamation-triangle mr-2"></i>'; break;
+                 default: bgColor = 'bg-blue-500'; icon = '<i class="fas fa-info-circle mr-2"></i>'; break;
+             }
+             toast.classList.add(bgColor);
+             toast.innerHTML = `${icon} ${message}`;
+             document.body.appendChild(toast);
+             setTimeout(() => {
+                 toast.classList.add('opacity-0');
+                 setTimeout(() => { toast.remove(); }, 300);
+             }, 3000);
+         }
+
+          // Placeholder for viewCategory from bottom nav
+         function viewCategory(categoryName) {
+              showMessageModal('Categories', `Navigating to ${categoryName} category. (Demo only)`, 'info', () => navigateTo(`category-placeholder.html?name=${categoryName}`));
+         }
+
+
+         // --- Profile Settings Specific JavaScript ---
+
+         document.addEventListener('DOMContentLoaded', () => {
+             setupTabs();
+             setupAvatarUpload();
+             setupForms();
+             updateCartDisplay(); // Update cart count on nav bar
+         });
+
+         function setupTabs() {
+             const tabButtons = document.querySelectorAll('.tab-btn');
+             const tabContents = document.querySelectorAll('.tab-content');
+
+             tabButtons.forEach(button => {
+                 button.addEventListener('click', () => {
+                     const targetTab = button.dataset.tab;
+
+                     // Deactivate all buttons and content
+                     tabButtons.forEach(btn => btn.classList.remove('active'));
+                     tabContents.forEach(content => content.classList.remove('active'));
+
+                     // Activate the clicked button and corresponding content
+                     button.classList.add('active');
+                     document.getElementById(targetTab).classList.add('active');
+                 });
+             });
+         }
+
+         function setupAvatarUpload() {
+             const avatarUploadInput = document.getElementById('avatar-upload');
+             const avatarPreview = document.getElementById('avatar-preview');
+             const removeAvatarButton = document.querySelector('.remove-avatar');
+             const defaultAvatarSrc = 'https://via.placeholder.com/150'; // Placeholder image
+
+             // Handle file selection
+             if(avatarUploadInput && avatarPreview) {
+                 avatarUploadInput.addEventListener('change', function(event) {
+                     const file = event.target.files[0];
+                     if (file) {
+                         const reader = new FileReader();
+                         reader.onload = function(e) {
+                             avatarPreview.src = e.target.result;
+                             // In a real app, you would save this image to your server
+                             showToastMessage('Image selected. Click "Save Changes" to upload.', 'info');
+                         }
+                         reader.readAsDataURL(file);
+                     }
+                 });
+             }
+
+             // Handle remove button click
+             if(removeAvatarButton && avatarPreview) {
+                 removeAvatarButton.addEventListener('click', function() {
+                     avatarPreview.src = defaultAvatarSrc; // Reset to default image
+                     avatarUploadInput.value = ''; // Clear the file input
+                      // In a real app, you would notify the server to remove the old image
+                     showToastMessage('Avatar removed. Click "Save Changes" to confirm.', 'info');
+                 });
+             }
+         }
+
+          function setupForms() {
+              const profileForm = document.getElementById('profile-form');
+              const passwordForm = document.getElementById('password-form');
+              // Add listeners for other forms if needed
+
+              if(profileForm) {
+                  profileForm.addEventListener('submit', function(event) {
+                      event.preventDefault();
+                      // Collect data from form fields
+                      const formData = {
+                          firstName: document.getElementById('first-name').value,
+                          lastName: document.getElementById('last-name').value,
+                          email: document.getElementById('email').value,
+                          phone: document.getElementById('phone').value,
+                          birthday: document.getElementById('birthday').value,
+                          gender: document.getElementById('gender').value,
+                          // Add avatar data if changed (e.g., send file or flag for removal)
+                      };
+
+                      console.log('Saving profile changes:', formData); // Log data
+                      // In a real app, send formData to backend via AJAX/Fetch API
+                       showToastMessage('Profile changes saved! (Demo)', 'success');
+                  });
+              }
+
+               if(passwordForm) {
+                  passwordForm.addEventListener('submit', function(event) {
+                      event.preventDefault();
+                      const currentPassword = document.getElementById('current-password').value;
+                      const newPassword = document.getElementById('new-password').value;
+                      const confirmPassword = document.getElementById('confirm-password').value;
+
+                      if (newPassword !== confirmPassword) {
+                          showMessageModal('Error', 'New password and confirmation do not match.', 'error');
+                          return;
+                      }
+                       if (newPassword.length < 8) { // Basic check
+                           showMessageModal('Error', 'New password must be at least 8 characters long.', 'warning');
+                           return;
+                       }
+
+                      console.log('Changing password...'); // Log action
+                      // In a real app, send passwords to backend for verification and update
+                       // Clear fields on success
+                       document.getElementById('current-password').value = '';
+                       document.getElementById('new-password').value = '';
+                       document.getElementById('confirm-password').value = '';
+
+                       showToastMessage('Password changed successfully! (Demo)', 'success');
+                  });
+              }
+
+              // Add event listeners for notification and security forms similarly
+          }
+
+
+    </script>
+</body>
+</html>
