@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Shop সেরা</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+        }
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .icon-text span {
+            font-size: 0.7rem; /* Smaller text for icons */
+        }
+        .list-item {
+            transition: background-color 0.2s ease-in-out;
+        }
+        .list-item:hover {
+            background-color: #e5e7eb; /* Light gray hover */
+        }
+        .btn-primary {
+            background-color: #4f46e5; /* Indigo */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        .btn-danger {
+            background-color: #ef4444; /* Red */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        .profile-header {
+            background: linear-gradient(to right, #6366f1, #8b5cf6); /* Gradient background */
+        }
+    </style>
+</head>
+<body class="pb-20"> <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex items-center">
+            <h1 class="text-xl font-semibold text-gray-800">My Account</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4">
+
+        <section class="profile-header text-white p-6 rounded-lg shadow-lg mb-6 flex items-center space-x-4">
+            <img src="https://placehold.co/80x80/e0e7ff/4338ca?text=User" alt="User Avatar" class="w-20 h-20 rounded-full border-2 border-white shadow-md">
+            <div>
+                <h2 class="text-2xl font-semibold" id="user-name-display">Jane Doe</h2>
+                <p class="text-sm opacity-90" id="user-email-display">jane.doe@example.com</p>
+            </div>
+        </section>
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <ul class="divide-y divide-gray-200">
+                <li class="list-item">
+                    <a href="profile.html" class="flex items-center justify-between p-4 hover:bg-gray-50 transition duration-150">
+                        <div class="flex items-center">
+                            <i class="fas fa-user-edit fa-fw text-indigo-500 mr-3 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Edit Profile</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a href="order-history.html" class="flex items-center justify-between p-4 hover:bg-gray-50 transition duration-150">
+                        <div class="flex items-center">
+                            <i class="fas fa-history fa-fw text-green-500 mr-3 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Order History</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a href="addresses.html" class="flex items-center justify-between p-4 hover:bg-gray-50 transition duration-150">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt fa-fw text-blue-500 mr-3 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Manage Addresses</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a href="payments.html" class="flex items-center justify-between p-4 hover:bg-gray-50 transition duration-150">
+                        <div class="flex items-center">
+                            <i class="fas fa-credit-card fa-fw text-yellow-500 mr-3 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Payment Methods</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                </li>
+                <li class="list-item">
+                    <a href="wishlist.html" class="flex items-center justify-between p-4 hover:bg-gray-50 transition duration-150">
+                        <div class="flex items-center">
+                            <i class="fas fa-heart fa-fw text-pink-500 mr-3 text-lg"></i>
+                            <span class="text-gray-700 font-medium">My Wishlist</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                </li>
+                 <li class="list-item">
+                    <a href="#" onclick="showSettings()" class="flex items-center justify-between p-4 hover:bg-gray-50 transition duration-150">
+                        <div class="flex items-center">
+                            <i class="fas fa-cog fa-fw text-gray-500 mr-3 text-lg"></i>
+                            <span class="text-gray-700 font-medium">Settings</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-8">
+            <button onclick="logoutUser()" class="w-full btn-danger py-3 rounded-lg font-semibold text-lg">
+                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            </button>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white p-2 bottom-nav z-50">
+        <div class="container mx-auto flex justify-around items-center">
+            <a href="home.html" class="icon-text text-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-home fa-lg"></i>
+                <span class="block">Home</span>
+            </a>
+            <a href="#" class="icon-text text-center text-gray-600 hover:text-indigo-600" onclick="viewCategory('all')">
+                <i class="fas fa-th-large fa-lg"></i>
+                <span class="block">Categories</span>
+            </a>
+            <a href="#" class="icon-text text-center text-gray-600 hover:text-indigo-600" onclick="openCart()">
+                <i class="fas fa-shopping-bag fa-lg"></i>
+                <span class="block">Cart</span>
+                 <span id="cart-count-nav" class="absolute top-0 right-[calc(50%-22px)] transform translate-x-1/2 -translate-y-0.5 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center" style="font-size:0.6rem;">0</span>
+            </a>
+            <a href="order-history.html" class="icon-text text-center text-gray-600 hover:text-indigo-600">
+                <i class="fas fa-receipt fa-lg"></i>
+                <span class="block">Orders</span>
+            </a>
+            <a href="account.html" class="icon-text text-center text-indigo-600 hover:text-indigo-700"> <i class="fas fa-user-circle fa-lg"></i>
+                <span class="block">Account</span>
+            </a>
+        </div>
+    </nav>
+
+    <div id="cart-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Your Cart</h3>
+                <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div id="cart-items-container" class="flex-grow overflow-y-auto mb-4">
+                <p class="text-gray-500 text-center">Your cart is empty.</p>
+            </div>
+            <div class="border-t pt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold text-gray-700">Subtotal:</span>
+                    <span id="cart-subtotal" class="text-lg font-bold text-indigo-600">$0.00</span>
+                </div>
+                <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="checkout()">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="message-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm text-center">
+            <div id="message-modal-icon" class="mb-4">
+                 </div>
+            <h3 id="message-modal-title" class="text-xl font-semibold text-gray-800 mb-2"></h3>
+            <p id="message-modal-text" class="text-gray-600 mb-6"></p>
+            <button id="message-modal-button" class="btn-primary py-2 px-6 rounded-lg" onclick="closeMessageModal()">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Basic navigation function
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // Cart state (ideally shared or persisted, e.g., via localStorage)
+        let cart = JSON.parse(localStorage.getItem('mCommerceCart')) || [];
+
+        // Function to update cart display (count and modal)
+        function updateCartDisplay() {
+            const cartCountNavElement = document.getElementById('cart-count-nav'); // For bottom nav
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            const cartSubtotalElement = document.getElementById('cart-subtotal');
+            let totalItems = 0;
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                totalItems += item.quantity;
+                subtotal += item.price * item.quantity;
+            });
+
+            if(cartCountNavElement) cartCountNavElement.textContent = totalItems;
+            // Update header cart count if it exists on the page (not on this specific account page header)
+            const headerCartCount = document.getElementById('cart-count');
+            if(headerCartCount) headerCartCount.textContent = totalItems;
+
+
+            if (cartItemsContainer) { // Check if the cart modal elements are on the current page
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty.</p>';
+                } else {
+                    cartItemsContainer.innerHTML = cart.map(item => `
+                        <div class="flex justify-between items-center py-3 border-b last:border-b-0">
+                            <div>
+                                <p class="font-semibold text-sm text-gray-700">${item.name}</p>
+                                <p class="text-xs text-gray-500">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                            </div>
+                            <div class="flex items-center">
+                                <p class="font-semibold text-sm text-indigo-600 mr-4">$${(item.price * item.quantity).toFixed(2)}</p>
+                                <button class="text-red-500 hover:text-red-700 text-xs" onclick="removeFromCart(${item.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                cartSubtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            }
+            localStorage.setItem('mCommerceCart', JSON.stringify(cart)); // Persist cart
+        }
+        
+        function addToCart(productId, productName, productPrice) { // Keep for potential use if products are shown here
+            const existingItemIndex = cart.findIndex(item => item.id === productId);
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                cart.push({ id: productId, name: productName, price: productPrice, quantity: 1 });
+            }
+            updateCartDisplay();
+            showToastMessage(`${productName} added to cart!`, 'success');
+        }
+
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartDisplay();
+            if (cart.length === 0 && document.getElementById('cart-items-container')) {
+                updateCartDisplay(); // Refresh modal if it's open and becomes empty
+            }
+        }
+
+        function openCart() {
+            updateCartDisplay();
+            document.getElementById('cart-modal').classList.remove('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-modal').classList.add('hidden');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showMessageModal('Empty Cart', 'Please add items to your cart before proceeding to checkout.', 'warning');
+                return;
+            }
+            closeCart();
+            showMessageModal('Checkout', 'Proceeding to checkout with ' + cart.length + ' item(s). (Demo only)', 'success', () => navigateTo('checkout-placeholder.html'));
+        }
+
+        function viewCategory(categoryName) { // For bottom nav consistency
+             showMessageModal('Categories', `Navigating to ${categoryName} category. (Demo only)`, 'info', () => navigateTo(`category-placeholder.html?name=${categoryName}`));
+        }
+
+        // User Profile Data (Placeholder - load from backend/localStorage in a real app)
+        const userData = {
+            name: "John Doe",
+            email: "john.doe@example.com"
+        };
+
+        function loadUserProfile() {
+            const storedUser = JSON.parse(localStorage.getItem('mCommerceUser'));
+            if (storedUser) {
+                document.getElementById('user-name-display').textContent = storedUser.name;
+                document.getElementById('user-email-display').textContent = storedUser.email;
+            } else {
+                // Use default or prompt login
+                document.getElementById('user-name-display').textContent = userData.name;
+                document.getElementById('user-email-display').textContent = userData.email;
+                // For demo, save this default user if none exists
+                localStorage.setItem('mCommerceUser', JSON.stringify(userData));
+            }
+        }
+
+        function logoutUser() {
+            showMessageModal(
+                'Logout',
+                'Are you sure you want to logout?',
+                'warning',
+                () => {
+                    // Clear user data from localStorage (or make API call)
+                    localStorage.removeItem('mCommerceUser');
+                    // Optionally clear cart or other sensitive data
+                    // localStorage.removeItem('mCommerceCart'); 
+                    showToastMessage('Logged out successfully!', 'success');
+                    // Redirect to login page or home page after a short delay
+                    setTimeout(() => {
+                        navigateTo('login-placeholder.html'); // Placeholder for login page
+                    }, 1500);
+                }
+            );
+        }
+
+        function showSettings() {
+            showMessageModal('Settings', 'Settings page is not yet implemented. (Demo only)', 'info');
+        }
+
+
+        // Generic Message Modal Functions (Copied from home.html)
+        function showMessageModal(title, text, type = 'info', onOkCallback = null, onCancelCallback = null) {
+            const modal = document.getElementById('message-modal');
+            const titleEl = document.getElementById('message-modal-title');
+            const textEl = document.getElementById('message-modal-text');
+            const iconEl = document.getElementById('message-modal-icon');
+            const buttonEl = document.getElementById('message-modal-button');
+
+            titleEl.textContent = title;
+            textEl.textContent = text;
+
+            let iconHtml = '';
+            let buttonClass = 'btn-primary'; // Default button style
+
+            switch (type) {
+                case 'success':
+                    iconHtml = '<i class="fas fa-check-circle text-5xl text-green-500"></i>';
+                    buttonClass = 'bg-green-500 hover:bg-green-600 text-white';
+                    break;
+                case 'error':
+                    iconHtml = '<i class="fas fa-times-circle text-5xl text-red-500"></i>';
+                    buttonClass = 'bg-red-500 hover:bg-red-600 text-white';
+                    break;
+                case 'warning': // Often used for confirmations
+                    iconHtml = '<i class="fas fa-exclamation-triangle text-5xl text-yellow-500"></i>';
+                    buttonClass = 'bg-yellow-500 hover:bg-yellow-600 text-gray-800';
+                    // For confirmation dialogs, you might add a cancel button here or change button text
+                    if (onOkCallback && onCancelCallback !== false) { // Check if it's a confirmation
+                        buttonEl.textContent = 'Confirm'; // Or 'Yes', 'Proceed' etc.
+                        // Add a cancel button dynamically or have it pre-defined and show it
+                        // For simplicity, current modal only has one button.
+                    } else {
+                        buttonEl.textContent = 'OK';
+                    }
+                    break;
+                case 'info':
+                default:
+                    iconHtml = '<i class="fas fa-info-circle text-5xl text-blue-500"></i>';
+                    buttonClass = 'bg-blue-500 hover:bg-blue-600 text-white';
+                    buttonEl.textContent = 'OK';
+                    break;
+            }
+            iconEl.innerHTML = iconHtml;
+            buttonEl.className = `py-2 px-6 rounded-lg font-semibold ${buttonClass}`; // Apply dynamic class
+
+            modal.classList.remove('hidden');
+            modal.onOkCallback = onOkCallback;
+            // If you add a cancel button, you'd handle its callback too.
+            // modal.onCancelCallback = onCancelCallback;
+        }
+
+
+        function closeMessageModal() {
+            const modal = document.getElementById('message-modal');
+            modal.classList.add('hidden');
+            if (typeof modal.onOkCallback === 'function') {
+                // Check if the button pressed was indeed the "OK" or "Confirm" one
+                // This simple modal only has one button, so we assume it's the affirmative one.
+                modal.onOkCallback();
+            }
+            // Reset callbacks
+            modal.onOkCallback = null;
+            // modal.onCancelCallback = null;
+            document.getElementById('message-modal-button').textContent = 'OK'; // Reset button text
+        }
+
+
+        // Simple Toast Notification (Copied from home.html)
+        function showToastMessage(message, type = 'info') {
+            const toastId = 'toast-' + Date.now();
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `fixed top-20 right-4 p-4 rounded-lg shadow-lg text-white text-sm z-[100] transition-opacity duration-300 ease-in-out`;
+
+            let bgColor = '';
+            let icon = '';
+
+            switch (type) {
+                case 'success':
+                    bgColor = 'bg-green-500';
+                    icon = '<i class="fas fa-check-circle mr-2"></i>';
+                    break;
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    icon = '<i class="fas fa-times-circle mr-2"></i>';
+                    break;
+                case 'warning':
+                    bgColor = 'bg-yellow-500 text-gray-800';
+                    icon = '<i class="fas fa-exclamation-triangle mr-2"></i>';
+                    break;
+                case 'info':
+                default:
+                    bgColor = 'bg-blue-500';
+                    icon = '<i class="fas fa-info-circle mr-2"></i>';
+                    break;
+            }
+            toast.classList.add(bgColor);
+            toast.innerHTML = `${icon} ${message}`;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+            updateCartDisplay(); // Update cart count on nav bar
+        });
+    </script>
+</body>
+</html>
